@@ -378,6 +378,8 @@ function formatMarkdown(result: ScanResult): string {
 
   lines.push(`---`);
   lines.push(`*Gridwork AI Act Scanner — thegridwork.space*`);
+  lines.push(``);
+  lines.push(`*Note: This scan detects direct AI library imports and API references. Indirect usage (internal APIs proxying to AI providers, runtime-loaded models, or vendor SaaS with embedded AI) requires manual review.*`);
 
   return lines.join("\n");
 }

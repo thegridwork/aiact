@@ -214,20 +214,18 @@ export function buildInventory(detections: AIDetection[]): AISystemInventoryEntr
 export function calculateComplianceScore(inventory: AISystemInventoryEntry[]): { score: number; grade: string } {
   if (inventory.length === 0) return { score: 100, grade: "A" };
 
-  // Score based on how many gaps exist relative to what's required
-  const totalGaps = inventory.reduce((sum, entry) => sum + entry.complianceGaps.length, 0);
-  const criticalGaps = inventory.reduce(
-    (sum, entry) => sum + entry.complianceGaps.filter(g => g.priority === "critical").length,
-    0
-  );
-  const highGaps = inventory.reduce(
-    (sum, entry) => sum + entry.complianceGaps.filter(g => g.priority === "high").length,
-    0
-  );
+  // Readiness score — what percentage of required actions have been addressed?
+  // Since we can only detect AI usage (not documentation), this represents
+  // the gap between "AI found" and "compliance addressed".
+  // High-risk systems have more requirements, so they weigh more.
+  const highRisk = inventory.filter(e => e.riskClassification.level === "high").length;
+  const limited = inventory.filter(e => e.riskClassification.level === "limited").length;
+  const minimal = inventory.filter(e => e.riskClassification.level === "minimal").length;
 
-  // Deductions
-  const deductions = criticalGaps * 12 + highGaps * 6;
-  const score = Math.max(0, Math.min(100, 100 - deductions));
+  // Each high-risk system without documentation is a major gap
+  // Score represents urgency: more high-risk systems = lower readiness
+  const riskWeight = highRisk * 20 + limited * 8 + minimal * 2;
+  const score = Math.max(0, Math.min(100, 100 - riskWeight));
 
   const grade = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 50 ? "D" : "F";
   return { score, grade };

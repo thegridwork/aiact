@@ -10,6 +10,21 @@ const IGNORE_DIRS = new Set([
   "vendor", "target", "bin", "obj",
 ]);
 
+const IGNORE_FILE_PATTERNS = /\.(md|mdx|txt|log|csv|svg|lock)$|^(README|CHANGELOG|LICENSE|CONTRIBUTING|HISTORY)/i;
+
+function isCommentOrString(line: string): boolean {
+  const trimmed = line.trim();
+  return (
+    trimmed.startsWith("//") ||
+    trimmed.startsWith("#") && !trimmed.startsWith("#!") ||
+    trimmed.startsWith("*") ||
+    trimmed.startsWith("/*") ||
+    trimmed.startsWith("<!--") ||
+    trimmed.startsWith("\"\"\"") ||
+    trimmed.startsWith("'''")
+  );
+}
+
 const MAX_FILE_SIZE = 512 * 1024; // 512KB
 const MAX_FILES = 5000;
 
@@ -81,11 +96,19 @@ export function scanDirectory(projectPath: string): { detections: AIDetection[];
     const lines = content.split("\n");
     const relativePath = path.relative(resolvedPath, filePath);
 
+    // Skip documentation files (high false-positive rate)
+    if (IGNORE_FILE_PATTERNS.test(path.basename(filePath))) continue;
+
     for (const pattern of AI_PATTERNS) {
       if (!shouldScanFile(filePath, pattern)) continue;
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
+        // Skip comments (unless it's an env file or package manifest)
+        const isManifest = /package\.json|requirements|pyproject|Pipfile|setup\.(py|cfg)/.test(path.basename(filePath));
+        const isEnv = path.basename(filePath).startsWith(".env");
+        if (!isManifest && !isEnv && isCommentOrString(line)) continue;
+
         for (const regex of pattern.patterns) {
           if (regex.test(line)) {
             const key = `${pattern.name}:${relativePath}:${i + 1}`;
