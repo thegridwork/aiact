@@ -1,0 +1,44 @@
+{
+  "name": "gridwork-aiact",
+  "version": "1.0.0",
+  "mcpName": "io.github.thegridwork/aiact",
+  "description": "MCP server that scans codebases for AI usage and generates EU AI Act compliance reports",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thegridwork/aiact.git"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "gridwork-aiact": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "eu-ai-act",
+    "compliance",
+    "ai-inventory",
+    "risk-classification",
+    "regulation",
+    "audit"
+  ],
+  "author": "Gridwork <thegridwork@proton.me>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}
