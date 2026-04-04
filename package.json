@@ -1,6 +1,6 @@
 {
   "name": "gridwork-aiact",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "mcpName": "io.github.thegridwork/aiact",
   "description": "MCP server that scans codebases for AI usage and generates EU AI Act compliance reports",
   "repository": {

@@ -122,6 +122,190 @@ export const AI_PATTERNS: DetectionPattern[] = [
     confidence: "medium",
   },
 
+  // ── Additional LLM APIs ──
+  {
+    name: "Groq",
+    provider: "Groq",
+    category: "llm-api",
+    patterns: [
+      /from\s+groq\s+import/,
+      /import\s+Groq\s+from\s+["']groq["']/,
+      /GROQ_API_KEY/,
+      /api\.groq\.com/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+  {
+    name: "AWS Bedrock",
+    provider: "Amazon",
+    category: "llm-api",
+    patterns: [
+      /bedrock-runtime/,
+      /BedrockRuntime/,
+      /invoke_model/,
+      /bedrock\.amazonaws\.com/,
+      /AWS_BEDROCK/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*", "*.yaml", "*.yml"],
+    confidence: "high",
+  },
+  {
+    name: "Deepseek",
+    provider: "Deepseek",
+    category: "llm-api",
+    patterns: [
+      /DEEPSEEK_API_KEY/,
+      /api\.deepseek\.com/,
+      /deepseek-chat/,
+      /deepseek-coder/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+  {
+    name: "Claude Agent SDK",
+    provider: "Anthropic",
+    category: "llm-api",
+    patterns: [
+      /from\s+claude_agent_sdk\s+import/,
+      /import\s+.*from\s+["']claude_agent_sdk["']/,
+      /import\s+.*from\s+["']@anthropic-ai\/agent["']/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py"],
+    confidence: "high",
+  },
+  {
+    name: "Cerebras",
+    provider: "Cerebras",
+    category: "llm-api",
+    patterns: [
+      /CEREBRAS_API_KEY/,
+      /api\.cerebras\.ai/,
+      /from\s+cerebras\s+import/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+  {
+    name: "Fireworks AI",
+    provider: "Fireworks",
+    category: "llm-api",
+    patterns: [
+      /FIREWORKS_API_KEY/,
+      /api\.fireworks\.ai/,
+      /fireworks\.ai/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "medium",
+  },
+  {
+    name: "Perplexity",
+    provider: "Perplexity",
+    category: "llm-api",
+    patterns: [
+      /PERPLEXITY_API_KEY/,
+      /api\.perplexity\.ai/,
+      /pplx-api/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+
+  // ── Image/Media Generation ──
+  {
+    name: "DALL-E",
+    provider: "OpenAI",
+    category: "computer-vision",
+    patterns: [
+      /openai\.images/,
+      /dall-e/i,
+      /images\.generate/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py"],
+    confidence: "high",
+  },
+  {
+    name: "Stability AI",
+    provider: "Stability AI",
+    category: "computer-vision",
+    patterns: [
+      /STABILITY_API_KEY/,
+      /api\.stability\.ai/,
+      /stable-diffusion/i,
+      /from\s+stability_sdk\s+import/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+  {
+    name: "ElevenLabs",
+    provider: "ElevenLabs",
+    category: "speech",
+    patterns: [
+      /ELEVENLABS_API_KEY/,
+      /api\.elevenlabs\.io/,
+      /from\s+elevenlabs\s+import/,
+      /import\s+.*from\s+["']elevenlabs["']/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+
+  // ── Additional NLP ──
+  {
+    name: "spaCy",
+    provider: "Explosion",
+    category: "nlp",
+    patterns: [
+      /import\s+spacy/,
+      /from\s+spacy\s+import/,
+      /spacy\.load\s*\(/,
+    ],
+    fileGlobs: ["*.py"],
+    confidence: "high",
+  },
+
+  // ── Additional Computer Vision ──
+  {
+    name: "Detectron2",
+    provider: "Meta",
+    category: "computer-vision",
+    patterns: [
+      /from\s+detectron2\s+import/,
+      /import\s+detectron2/,
+    ],
+    fileGlobs: ["*.py"],
+    confidence: "high",
+  },
+
+  // ── Additional Vector DBs ──
+  {
+    name: "Qdrant",
+    provider: "Qdrant",
+    category: "embedding",
+    patterns: [
+      /from\s+qdrant_client\s+import/,
+      /import\s+.*from\s+["']@qdrant\/js-client-rest["']/,
+      /QDRANT_URL/,
+      /QDRANT_API_KEY/,
+    ],
+    fileGlobs: ["*.ts", "*.js", "*.py", "*.env*"],
+    confidence: "high",
+  },
+  {
+    name: "Milvus",
+    provider: "Zilliz",
+    category: "embedding",
+    patterns: [
+      /from\s+pymilvus\s+import/,
+      /import\s+pymilvus/,
+      /MILVUS_HOST/,
+    ],
+    fileGlobs: ["*.py", "*.env*"],
+    confidence: "high",
+  },
+
   // ── ML Frameworks ──
   {
     name: "PyTorch",
@@ -391,6 +575,10 @@ export const AI_PATTERNS: DetectionPattern[] = [
       /"@pinecone-database\/pinecone"\s*:/,
       /"ai"\s*:/,
       /"@ai-sdk\//,
+      /"groq"\s*:/,
+      /"@cerebras\/cerebras_cloud_sdk"\s*:/,
+      /"elevenlabs"\s*:/,
+      /"@qdrant\/js-client-rest"\s*:/,
     ],
     fileGlobs: ["package.json"],
     confidence: "high",
@@ -413,6 +601,14 @@ export const AI_PATTERNS: DetectionPattern[] = [
       /^vllm[>=<~!\s]/m,
       /^chromadb[>=<~!\s]/m,
       /^pinecone-client[>=<~!\s]/m,
+      /^groq[>=<~!\s]/m,
+      /^deepseek[>=<~!\s]/m,
+      /^stability-sdk[>=<~!\s]/m,
+      /^elevenlabs[>=<~!\s]/m,
+      /^spacy[>=<~!\s]/m,
+      /^detectron2[>=<~!\s]/m,
+      /^qdrant-client[>=<~!\s]/m,
+      /^pymilvus[>=<~!\s]/m,
     ],
     fileGlobs: ["requirements*.txt", "pyproject.toml", "Pipfile", "setup.py", "setup.cfg"],
     confidence: "high",
